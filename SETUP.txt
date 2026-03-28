@@ -1,0 +1,22 @@
+Play Backend - Setup local
+
+Prerequisitos:
+1) Java 17+ recomendado para Play 3.
+2) sbt instalado.
+3) PostgreSQL corriendo en local.
+
+Variables de entorno opcionales:
+- DB_URL (default: jdbc:postgresql://localhost:5432/play_react_db)
+- DB_USER (default: postgres)
+- DB_PASSWORD (default: postgres)
+- JWT_SECRET (default: super-secret-jwt-key-change-me)
+- PLAY_SECRET_KEY (default: dev-play-secret-change-me)
+
+Crear base de datos en PostgreSQL:
+CREATE DATABASE play_react_db;
+
+Levantar la app:
+sbt run
+
+Ejecutar pruebas:
+sbt test

@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:9000
+@token = replace-with-jwt
+
+### Register
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "demo@example.com",
+  "password": "pass1234"
+}
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@example.com",
+  "password": "pass1234"
+}
+
+### List projects
+GET {{baseUrl}}/api/projects
+Authorization: Bearer {{token}}
+
+### Create project
+POST {{baseUrl}}/api/projects
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Integrar frontend React",
+  "description": "Construir vista de proyectos",
+  "status": "TODO"
+}
+
+### Update project
+PUT {{baseUrl}}/api/projects/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Integrar frontend React",
+  "description": "Con tabla y formulario",
+  "status": "IN_PROGRESS"
+}
+
+### Delete project
+DELETE {{baseUrl}}/api/projects/1
+Authorization: Bearer {{token}}
