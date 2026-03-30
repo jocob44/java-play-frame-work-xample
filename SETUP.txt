@@ -1,22 +1,55 @@
-Play Backend - Setup local
+Play Backend + Frontend - Setup
 
+Opcion A) Full stack con Docker (recomendada)
+1) Requisito unico: Docker Desktop.
+2) Desde la raiz del repo ejecutar:
+   docker compose up --build
+3) URLs:
+   - Frontend: http://localhost:8080
+   - Backend API: http://localhost:9000
+   - Postgres: localhost:5432
+4) Para detener:
+   docker compose down
+5) Para borrar volumen de DB:
+   docker compose down -v
+
+Opcion B) Full stack Docker en modo desarrollo (hot reload frontend)
+1) Desde la raiz del repo ejecutar:
+   docker compose -f docker-compose.dev.yml up --build
+2) URLs:
+   - Frontend (Vite): http://localhost:3000
+   - Backend API: http://localhost:9000
+3) Para detener:
+   docker compose -f docker-compose.dev.yml down
+4) Para borrar volumenes dev:
+   docker compose -f docker-compose.dev.yml down -v
+5) Parametro extra opcional en Windows si no detecta cambios:
+   CHOKIDAR_USEPOLLING=true (ya viene seteado en compose dev)
+
+Opcion C) Desarrollo local sin Docker
 Prerequisitos:
 1) Java 17+ recomendado para Play 3.
 2) sbt instalado.
 3) PostgreSQL corriendo en local.
+4) Node.js 22+ para el frontend.
 
-Variables de entorno opcionales:
+Variables de entorno opcionales del backend:
 - DB_URL (default: jdbc:postgresql://localhost:5432/play_react_db)
 - DB_USER (default: postgres)
 - DB_PASSWORD (default: postgres)
 - JWT_SECRET (default: super-secret-jwt-key-change-me)
 - PLAY_SECRET_KEY (default: dev-play-secret-change-me)
+- APP_TIMEZONE (default: America/Argentina/Buenos_Aires)
 
 Crear base de datos en PostgreSQL:
 CREATE DATABASE play_react_db;
 
-Levantar la app:
+Levantar backend:
 sbt run
 
-Ejecutar pruebas:
+Levantar frontend (en carpeta frontend):
+npm install
+npm run dev
+
+Ejecutar pruebas backend:
 sbt test

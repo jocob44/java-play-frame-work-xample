@@ -1,8 +1,7 @@
-
 services:
   postgres:
     image: postgres:16
-    container_name: play-postgres
+    container_name: play-postgres-dev
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -11,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - play_postgres_data:/var/lib/postgresql/data
+      - play_postgres_data_dev:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d play_react_db"]
       interval: 10s
@@ -22,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: play-backend
+    container_name: play-backend-dev
     restart: unless-stopped
     environment:
       DB_URL: jdbc:postgresql://postgres:5432/play_react_db
@@ -38,15 +37,22 @@ services:
         condition: service_healthy
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: play-frontend
+    image: node:22
+    container_name: play-frontend-dev
     restart: unless-stopped
+    working_dir: /app
+    command: sh -lc "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
+    environment:
+      VITE_PROXY_TARGET: http://backend:9000
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules_dev:/app/node_modules
     ports:
-      - "8080:80"
+      - "3000:3000"
     depends_on:
       - backend
 
 volumes:
-  play_postgres_data:
+  play_postgres_data_dev:
+  frontend_node_modules_dev:
